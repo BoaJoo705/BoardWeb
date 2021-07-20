@@ -10,8 +10,6 @@ public class JDBCUtil {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			return DriverManager.getConnection("jdbc:mysql://localhost/studydb?serverTimezone=UTC","study","1111");
-//			Class.forName("org.h2.Driver");
-//			return DriverManager.getConnection("jdbc:h2:tcp://localhost/~/test","sa","");
 		}catch(Exception e) {
 			e.printStackTrace();
 		}

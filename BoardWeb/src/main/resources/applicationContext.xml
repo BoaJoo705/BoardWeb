@@ -10,6 +10,11 @@
 
 	<!-- <context:component-scan base-package="polymorphism" />
 	<bean class="polymorphism.SonySpeaker"></bean> -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+			destroy-method="close"></bean>
+	<bean id="userService" class="com.springbook.biz.user.impl.UserServiceImpl">
+	<property name="userDAO" ref="userDAO"/></bean>
+	<bean id="userDAO" class="com.springbook.biz.user.impl.UserDAO"/>
 	<context:component-scan base-package="com.springbook.biz"></context:component-scan>
-
+	
 </beans>
