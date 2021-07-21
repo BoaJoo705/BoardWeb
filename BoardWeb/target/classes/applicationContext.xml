@@ -1,20 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
-						http://www.springframework.org/schema/beans/spring-beans.xsd
-						http://www.springframework.org/schema/context 
-						http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 
-	<!-- <context:component-scan base-package="polymorphism" />
-	<bean class="polymorphism.SonySpeaker"></bean> -->
-	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
-			destroy-method="close"></bean>
-	<bean id="userService" class="com.springbook.biz.user.impl.UserServiceImpl">
-	<property name="userDAO" ref="userDAO"/></bean>
-	<bean id="userDAO" class="com.springbook.biz.user.impl.UserDAO"/>
-	<context:component-scan base-package="com.springbook.biz"></context:component-scan>
+	<context:component-scan base-package="com.springbook.biz"/>
+	
+	<bean id="log" class="com.springbook.biz.common.LogAdvice"></bean>
+	
+	<!-- DataSource 설정 -->
+ 	<!-- jdbc를 위한 설정 외부의 프로퍼티 파일을 참조하여 datasource를 설정하는 것 -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost/studydb?serverTimezone=UTC" />
+		<property name="username" value="study" />
+		<property name="password" value="1111" />
+	</bean>
+	
+	<!-- Transaction 설정 -->
+	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	<tx:advice id="txAdvice" transaction-manager="txManager">
+		<tx:attributes>
+			<tx:method name="get*" read-only="true"/>
+			<tx:method name="*"/>
+		</tx:attributes>
+	</tx:advice>
+	
+	<aop:config>
+		<aop:pointcut id="allPointcut" expression="execution(* com.springbook.biz..*Impl.*(..))" />
+		<aop:pointcut id="getPointcut" expression="execution(* com.springbook.biz..*Impl.get*(..))" />	
+		
+		<aop:advisor pointcut-ref="allPointcut" advice-ref="txAdvice"/>
+	</aop:config>
+	
 	
 </beans>
