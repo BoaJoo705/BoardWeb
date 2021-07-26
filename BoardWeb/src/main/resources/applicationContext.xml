@@ -21,15 +21,18 @@
 	<bean id="log" class="com.springbook.biz.common.LogAdvice"></bean>
 
 	<!-- DataSource 설정 -->
+	<context:property-placeholder location="classpath:config/database.properties"/>
+	
+	
 	<!-- jdbc를 위한 설정 외부의 프로퍼티 파일을 참조하여 datasource를 설정하는 것 -->
 	<bean id="dataSource"
 		class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
 		<property name="driverClassName"
-			value="com.mysql.cj.jdbc.Driver" />
+			value="${jdbc.driver}" />
 		<property name="url"
-			value="jdbc:mysql://localhost/studydb?serverTimezone=UTC" />
-		<property name="username" value="study" />
-		<property name="password" value="1111" />
+			value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
 	</bean>
 
 	<!-- Transaction 설정 -->
