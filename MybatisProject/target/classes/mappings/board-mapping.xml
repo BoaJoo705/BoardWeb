@@ -4,24 +4,33 @@
 
 <mapper namespace="BoardDAO">
 
-	<insert id="insertBoard">
-		INSERT INTO board (seq, title, writer, content) VALUES((select seq from (select IFNULL(max(seq), 0) + 1 as seq from board)tmp), #{title}, #{writer}, #{content})
+	<resultMap id="boardResult" type="board">
+		<id property="seq" column="SEQ" />
+		<result property="title" column="TITLE" />
+		<result property="writer" column="WRITER" />
+		<result property="content" column="CONTENT" />
+		<result property="regDate" column="REGDATE" />
+		<result property="cnt" column="CNT" />
+	</resultMap>
+	
+	<insert id="insertBoard" parameterType="board">
+		<![CDATA[INSERT INTO board (seq, title, writer, content) VALUES((select seq from (select IFNULL(max(seq), 0) + 1 as seq from board)tmp), #{title}, #{writer}, #{content})]]>
 	</insert>
 	
 	<update id="updateBoard">
-		UPDATE board SET title=#{title},content =#{content} WHERE seq = #{seq}
+		<![CDATA[UPDATE board SET title=#{title},content =#{content} WHERE seq = #{seq}]]>
 	</update>
 	
 	<delete id="deleteBoard">
-		DELETE FROM board WHERE seq = #{seq}
+		<![CDATA[DELETE FROM board WHERE seq = #{seq}]]>
 	</delete>
 	
 	<select id="getBoard" resultType="board">
-		SELECT * FROM board WHERE seq = #{seq}
+		<![CDATA[SELECT * FROM board WHERE seq = #{seq}]]>
 	</select>
 
 	<select id="getBoardList" resultType="board">
-		SELECT * FROM board WHERE title like concat('%',#{searchKeyword},'%') order by seq desc
+		<![CDATA[SELECT * FROM board WHERE title like concat('%',#{searchKeyword},'%') order by seq desc]]>
 		
 	</select>
 
