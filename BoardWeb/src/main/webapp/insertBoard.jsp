@@ -27,7 +27,7 @@
 	</tr>	
 	<tr>
 		<td bgcolor="green" width="70">¾÷·Îµå</td><td align="left">
-		<input type="file" name="uploadfile"/></td>
+		<input type="file" name="uploadFile"/></td>
 	</tr>
 	<tr>
 		<td colspan="2" align="center">
