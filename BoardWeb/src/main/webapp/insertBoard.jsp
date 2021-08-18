@@ -17,7 +17,6 @@
 		<input type="text" name="title"/></td>
 	</tr>
 	<tr>
-	
 		<td bgcolor="green" >ÀÛ¼ºÀÚ</td><td align="left">
 		<input type="text" name="writer" size="10"/></td>
 	</tr>
